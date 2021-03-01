@@ -14,7 +14,7 @@ class Container:
         self.name = name
 
         self.states = [
-            {'name': 'waiting', 'timeout': timeout, 'on_timeout': self.on_timeout},
+            'waiting',
             {'name': 'pulling', 'timeout': timeout, 'on_timeout': self.on_timeout},
             {'name': 'running', 'timeout': timeout, 'on_timeout': self.on_timeout},
             {'name': 'sending', 'timeout': timeout, 'on_timeout': self.on_timeout},
@@ -23,9 +23,11 @@ class Container:
         self.machine = CustomMachine(model=self, states=self.states, initial='waiting')
         self.machine.add_ordered_transitions()
         self.set_callbacks()
+        self.to_waiting()
         self.results = None
     
     def set_callbacks(self):
+        self.machine.on_enter_waiting('on_waiting')
         self.machine.on_enter_pulling('on_pulling')
         self.machine.on_enter_running('on_running')
         self.machine.on_enter_sending('on_sending')
@@ -54,14 +56,19 @@ class Container:
         time.sleep(random.randint(1,3))
         self.next_state()
 
-    def on_stopped(self, success):
+    def on_waiting(self):
+        print("{0} has born, waiting...".format(self.name))
+        self.start_time = None
+
+
+    def on_stopped(self, success=True):
+        print("{} DONE!".format(self.name))
         self.end_time = time.time()
         self.results = {
             'reporter': self.name,
             'time': (self.end_time - self.start_time),
-            'error': not success
+            'success': success
         }
-        print("{} DONE!".format(self.name))
 
     def get_results(self):
         return self.results
