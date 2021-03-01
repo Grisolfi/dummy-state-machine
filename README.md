@@ -1,7 +1,7 @@
 # State Machine with Py Transitions
 
 Container model is an abstraction on what happens in a docker container execution 
-but you could customize your workflow
+but you could customize your workflow.  
 Main app creates some instances of container and execute its cycle inside a threadpool. You could also configure the max workers for Threadpool 
 ## Container
 
