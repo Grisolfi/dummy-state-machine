@@ -19,6 +19,7 @@ By default, Container does not have any timeout. But you pass as argument on obj
 
 There is a method on_timeout that is called when timeout is reached, you can add custom behavior to timeout event on Machines
 
-## References:
+## References
+
 1. https://github.com/pytransitions/transitions
 2. https://docs.python.org/3/library/concurrent.futures.html#concurrent.futures.ThreadPoolExecutor
